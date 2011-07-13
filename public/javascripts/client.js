@@ -215,8 +215,7 @@ function kickOffSlowGoogleProfileSearchInWebWorker(friendList) {
         friendData[item + ''] = retrieved;
     });
 
-    var address = $('#hiddenUrl').v
-al();
+    var address = $('#hiddenUrl').val();
     var port = $('#hiddenPort').val();
 
     var url = "http://"+address+":"+port+"/search/";
