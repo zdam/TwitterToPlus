@@ -1,23 +1,30 @@
+    var nastyGlobal = 0;    var friendCount = 0;
+
 $(function() {
 
     checkTwitterApiLimit();
-
 
     $('#doWork').click(function() {
         $('ul li').remove();
 
         logProgress("Working..");
 
-        var friendListCall = getTwitterFriendList($('#searchName').val());
+          var friendListCall = getTwitterFriendList($('#searchName').val());
 
         friendListCall.success(function(friendList) {
 
+            friendCount = friendList.length;
             var deferredTwitterCalls = buildSetOfDeferredTwitterDetailCalls(friendList);
 
             $.when.apply($, deferredTwitterCalls).then(function() {
                 kickOffSlowGoogleProfileSearchInWebWorker(friendList);
             });
         });
+
+        friendListCall.error(function(jqXHR, textStatus, error){
+            alert('Please ensure you use a valid twitter username');
+            logProgress("Actually, not working.. double check your twitter name");
+        })
     });
 });
 
@@ -25,6 +32,7 @@ function checkTwitterApiLimit(){
     $('#doWork').attr('disabled', true);
     $('#searchName').attr('disabled', true);
     $('#sorryOverLimit').hide();
+    $('#loader').hide();
 
     $.ajax({
         url:"http://api.twitter.com/1/account/rate_limit_status.json",
@@ -47,7 +55,8 @@ function getTwitterFriendList(searchName) {
     return $.ajax({
         url: "http://api.twitter.com/1/friends/ids.json",
         data: {screen_name: searchName},
-        dataType: "jsonp"
+        dataType: "jsonp",
+        timeout: 5000
     });
 }
 
@@ -60,8 +69,17 @@ function buildSetOfDeferredTwitterDetailCalls(friendList) {
     var len = friendList.length;
 
     logProgress("Number of friends found: " + len);
-
     logProgress("Beginning fast search");
+    logProgress('Retrieving details of your twitter friends');
+
+    logProgress('--');
+    logProgress("Sadly, only a small percentage of your twitter friends will be found");
+    logProgress("YOU can improve your own results!");
+    logProgress("Spread the word, ask folks on Twitter to go to");
+    logProgress("<a href='http://gplus.to/'>gplus.to</a> and get themselves a name that matches their twitter name");
+    logProgress('--');
+
+    $('#loader').show();
 
     // we chunk our calls to Twitter to return user details, as Twitter limits number of users we can ask for
     var numCalls = Math.floor(len / sliceSize) + 1;
@@ -83,20 +101,20 @@ function buildSetOfDeferredTwitterDetailCalls(friendList) {
         });
         twitterIds = twitterIds.substring(1); // strip leading comma
 
-        deferreds.push(searchForGoogleProfileInfo(twitterIds));
+        deferreds.push(searchTwitterDetailsForGoogleProfileInfo(twitterIds));
     }
 
     return deferreds;
 }
 
-function searchForGoogleProfileInfo(friendIdSlice) {
+function searchTwitterDetailsForGoogleProfileInfo(friendIdSlice) {
 
     return $.ajax("http://api.twitter.com/1/users/lookup.json", {
         data: {user_id: friendIdSlice},
         dataType: "jsonp"
     }).success(function(twitterFriendInfo) {
 
-            logProgress('Returned a slice from twitter');
+            //$('#staticProgress').text($('#staticProgress').text()+'.');
 
             // we examine various parts to see if any Google+ info is stored
             $.each(twitterFriendInfo, function(i, item) {
@@ -132,6 +150,7 @@ function searchForGoogleProfileInfo(friendIdSlice) {
                 }
 
                 if (friendData.googleLink !== "") {
+                    nastyGlobal++
                     var display = '';
                     if(isKnownUrl){
                         display = '<a href="'+friendData.googleLink+'">'+friendData.screen_name+'</a>';
@@ -148,7 +167,9 @@ function searchForGoogleProfileInfo(friendIdSlice) {
 }
 
 function kickOffSlowGoogleProfileSearchInWebWorker(friendList) {
-    logProgress('Beginning slow search, could take a while.. Google+ profile links will appear as they are found');
+    logProgress('Beginning slow search, could take a while.. Grab a drink');
+    logProgress('Google+ profile links will appear as they are found');
+
     var worker = new Worker("javascripts/worker.js");
 
     worker.onmessage = function(event) {
@@ -159,10 +180,21 @@ function kickOffSlowGoogleProfileSearchInWebWorker(friendList) {
             if(workerData.message.indexOf('omplete')> -1){
                 logProgress('** Search Complete **');
                 $("#userDetails").append("<li>** Search Complete **</li>");
+                $("#userDetails").append("<li>--</li>");
+                var perc = Math.floor((nastyGlobal / friendCount)*100);
+                $("#userDetails").append("<li>Sadly, only "+perc+"% of your twitter friends were found.</li>");
+                $("#userDetails").append("<li>YOU can improve your own results!</li>");
+                $("#userDetails").append("<li>Spread the word, ask folks on Twitter to go to</li>");
+                $("#userDetails").append("<li><a href='http://gplus.to/'>gplus.to</a> and get themselves a name that matches their twitter name</li>");
+                $("#userDetails").append("<li>- and ideally, they add their gplus.to name to their twitter url or bio</li>");
+                $("#userDetails").append("<li>- then come back in a while to get much better results.</li>");
+
+                $('#loader').hide();
             }
-            $('#staticProgress').text($('#staticProgress').text()+'.');
+            //$('#staticProgress').text($('#staticProgress').text()+'.');
         } else {
             if (workerData.found) {
+                nastyGlobal++;
                 var friendData = $.data(document.body, "friendData" + workerData.id);
                 friendData.googleLink = "http://gplus.to/" + friendData.screen_name;
 
@@ -183,7 +215,14 @@ function kickOffSlowGoogleProfileSearchInWebWorker(friendList) {
         friendData[item + ''] = retrieved;
     });
 
+    var address = $('#hiddenUrl').v
+al();
+    var port = $('#hiddenPort').val();
+
+    var url = "http://"+address+":"+port+"/search/";
+//alert(url);
     var messageToWorker = {
+        baseUrl: url,
         friendIdSlice: friendList,
         friendData: friendData
     };

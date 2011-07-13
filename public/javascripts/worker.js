@@ -9,7 +9,7 @@ self.addEventListener('message', function(event){
     for(var i=0; i < friendIds.length; i++){
 
         var twitterId = friendIds[i];
-        var url = "http://1beb748a.dotcloud.com/search/" + twitterId + "~" + workerMessage.friendData[twitterId].screen_name;
+        var url = workerMessage.baseUrl + twitterId + "~" + workerMessage.friendData[twitterId].screen_name;
 
         logMessage('the url: '+ url);
 

@@ -30,8 +30,14 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', function(req, res){
+
+    var url = app.address().address;
+    var port = app.address().port;
+
   res.render('index', {
-    title: 'Express'
+    title: 'Twitter To Google+',
+    url:url,
+    port:port
   });
 
 });
@@ -81,4 +87,5 @@ app.get('/search/:criteria', function(req, res){
 });
 
 app.listen(8080);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+console.log("Express server listening at address %s on port %d in %s mode", app.address().address, app.address().port, app.settings.env);

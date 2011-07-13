@@ -1,12 +1,18 @@
-h1  Twitter to Google+ finder.
+input(type='hidden', value=url, id='hiddenUrl')
+input(type='hidden', value=port, id='hiddenPort')
+h1  Twitter to Google+ finder
 h2  Enter your screen name, we will try to find the Google+ profiles of everyone you follow
 div#sorryOverLimit
-    h3 Sorry, we have exceeded the Twitter api rate limit. Try later, or 
+    h2 Sorry, we have exceeded the Twitter api rate limit. Try again later, or 
         a(href='https://github.com/zdam/TwitterToPlus', title='Grab the code') grab the code and run it yourself
-input#searchName
-button#doWork(type="button") Search
+input#searchName 
+button#doWork(type="button") Search  
+span (Requires a recent, non-Microsoft browser.)
 ul#progress
 label#staticProgress
+span#loader
+    img(id='loaderImg', src='images/ajax-loader.gif', alt='Progress Indicator')
+    span Seriously, this will take a while..
 ul#userIds
 ul#userDetails
 ul#foundgoogleplus
@@ -23,10 +29,12 @@ p If so, buy one of my super useful tools for the Mac:
     p
         a(href='http://itunes.apple.com/us/app/click-and-drag/id446219856?mt=12&ls=1', title='Click and Drag') Click and Drag
     p
-        span Thanks, Adam Webber 
+        span Thanks, Adam Webber
         p
+            span Twitter: 
             a(href='http://www.twitter.com/zdam', title='Twitter') @zdam
         p
+            span Google+:  
             a(href='http://gplus.to/adamwebber', title='Google+') adamwebber
 br
 br
@@ -36,13 +44,17 @@ br
 h2 How this works
 p
         div 1. Asks twitter for your list of friends
-        div 2. Looks at your friends' bio and url to see if there is a Google+ profile or a gplus.to nickname
-        div 3. Pings http://gplus.to trying to find any accounts matching your friends twitter names. eg glus.to/zdam
+        div 2. Fast search - Looks at your friends' bio and url to see if there is a Google+ profile or a gplus.to nickname
+        div 3. Slow Search - Pings http://gplus.to trying to find any accounts matching your friends twitter names. eg glus.to/zdam
 h2 Tech used
 p
-        div jQuery deferreds
-        div Web Workers
-        div Node.js
-        div express
+        div
+            a(href='http://api.jquery.com/category/deferred-object/', title='jQuery deferreds') jQuery deferreds
+        div
+            a(href='http://en.wikipedia.org/wiki/Web_Workers', title='Web Workers') Web Workers
+        div
+            a(href='http://nodejs.org/', title='Node.js') Node.js
+        div
+            a(href='http://expressjs.com/', title='express') express
         span Grab the code at 
             a(href='https://github.com/zdam/TwitterToPlus', title='Grab the code') Github
