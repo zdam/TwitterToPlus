@@ -1,6 +1,6 @@
 
-function onmessage(event) {
-
+//function onmessage(event) {
+self.addEventListener('message', function(event){
 
     var workerMessage = JSON.parse(event.data);
 
@@ -31,7 +31,7 @@ function onmessage(event) {
 
 
     logMessage('Search complete');
-}
+}, false);
 
 
 function logMessage(message){
