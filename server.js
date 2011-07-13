@@ -39,11 +39,11 @@ app.get('/', function(req, res){
 app.get('/search/:criteria', function(req, res){
     // todo expect that this is called via ajax, and we want to return some
 
-   console.log('at server');
+   //console.log('at server');
 
     var twitterId = req.params.criteria.split('~')[0];
     var screenName = req.params.criteria.split('~')[1];
-    //console.log('incoming criteria: ' + req.params.criteria);
+    console.log('incoming criteria: ' + twitterId+','+screenName);
 
     var wasFound = false;
 

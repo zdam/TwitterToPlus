@@ -10,12 +10,11 @@ function onmessage(event) {
 
         var twitterId = friendIds[i];
         var url = "http://0.0.0.0:3000/search/" + twitterId + "~" + workerMessage.friendData[twitterId].screen_name;
-        //var url = "http://0.0.0.0:3000/search/"+ workerMessage.friendData.data[friendIds[i]].screen_name;
 
         logMessage('the url: '+ url);
 
         var xhr = new XMLHttpRequest();
-        //xhr.open('GET', url += ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), false);
+        //xhr.open('GET', url += ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), false); //force uncached 
         xhr.open('GET', url, false);
         xhr.send(null);
 
@@ -29,6 +28,9 @@ function onmessage(event) {
 
         postMessage(JSON.stringify(messageToHost));
     }
+
+
+    logMessage('Search complete');
 }
 
 

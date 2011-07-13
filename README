@@ -1,3 +1,41 @@
 TwitterToPlus
 
 * Finds Google+ profiles of the Twitter folks that you follow
+
+
+
+
+
+Note: The Client only Works on Firefox 4+ as it requires Web Workers that accept json messages.
+
+Setup Instructions:
+
+This application uses Node.js on the server.
+On Mac OSX, this [installer](https://sites.google.com/site/nodejsmacosx/) will install Node.js and npm
+
+
+After getting this source code, ensure you have the following libraries installed:
+
+Node.js
+npm
+
+Then run the following command in the root directory where you downloaded the source code:
+
+npm install express
+npm install stylus jade
+npm install -g nodemon    (this is optional)
+
+
+You should then be able to run the app using the following command from the root directory:
+
+nodemon server.js
+
+Browsing to http://0.0.0.0:3000 should show you the app.
+
+
+Usage Instructions:
+
+1. Get the app running
+2. Enter your twitter screen name
+3. Click the 'Search' button
+4. Grab a cup of coffee

@@ -1,18 +1,48 @@
 h1  Twitter to Google+ finder.
 h2  Enter your screen name, we will try to find the Google+ profiles of everyone you follow
+div#sorryOverLimit
+    h3 Sorry, we have exceeded the Twitter api rate limit. Try later, or 
+        a(href='https://github.com/zdam/TwitterToPlus', title='Grab the code') grab the code and run it yourself
 input#searchName
-button#doWork(type="button") Do Search
+button#doWork(type="button") Search
 ul#progress
+label#staticProgress
 ul#userIds
 ul#userDetails
 ul#foundgoogleplus
-section.css-table
-  section.two-column
-    section.cell
-      h2 Left
-      p Lorem ipsum dolar sit amet, cons incidunt ut labore et dolore magn trud exercitation ullamcorpor susc vel eum irure dolor in reprehende dolore eu fugiat nulla pariatur.
-      p At lupatum delenit aigue duos dolor tempor sunt in culpa qui officia d dereud facils est er expedit distinc peccand quaerer en imigent cupidat. Incita visset, accom ex robore ad quam vis vadisen vlavis confecs nis revinc tae. Ietm hae magnitu dine for super oper mari aggere. Oppidi his mowni bus suifs fortunis desp erate coe magno recipei ban ibi se rursus isdem opport unitel rursus isdem opport loci defen porti busi. Navigandi ad nunc. Que neque pedibus ipsorum, naves ad hunc mod arm aeque, erant fere situs oppi dorum ut facilus. Vada ac desussum aestus exipe aditurn habere ex alto.
-    section.cell
-      h2 Right
-      p Lorem ipsum dolar sit amet, cons incidunt ut labore et dolore magn trud exercitation ullamcorpor susc vel eum irure dolor in reprehende dolore eu fugiat nulla pariatur.
-      p At lupatum delenit aigue duos dolor tempor sunt in culpa qui officia d dereud facils est er expedit distinc peccand quaerer en imigent cupidat. Incita visset, accom ex robore ad quam vis vadisen vlavis confecs nis revinc tae. Ietm hae magnitu dine for super oper mari aggere. Oppidi his mowni bus suifs fortunis desp erate coe magno recipei ban ibi se rursus isdem opport unitel rursus isdem opport loci defen porti busi. Navigandi ad nunc. Que neque pedibus ipsorum, naves ad hunc mod arm aeque, erant fere situs oppi dorum ut facilus. Vada ac desussum aestus exipe aditurn habere ex alto.
+br
+br
+br
+hr
+br
+br
+h3 Was this tool useful for you?
+p If so, buy one of my super useful tools for the Mac: 
+    p
+        a(href='http://itunes.apple.com/us/app/windowmax/id441457289?mt=12&ls=1', title='WindowMax') WindowMax
+    p
+        a(href='http://itunes.apple.com/us/app/click-and-drag/id446219856?mt=12&ls=1', title='Click and Drag') Click and Drag
+    p
+        span Thanks, Adam Webber 
+        p
+            a(href='http://www.twitter.com/zdam', title='Twitter') @zdam
+        p
+            a(href='http://gplus.to/adamwebber', title='Google+') adamwebber
+br
+br
+hr
+br
+br
+h2 How this works
+p
+        div 1. Asks twitter for your list of friends
+        div 2. Looks at your friends' bio and url to see if there is a Google+ profile or a gplus.to nickname
+        div 3. Pings http://gplus.to trying to find any accounts matching your friends twitter names. eg glus.to/zdam
+h2 Tech used
+p
+        div jQuery deferreds
+        div Web Workers
+        div Node.js
+        div express
+        span Grab the code at 
+            a(href='https://github.com/zdam/TwitterToPlus', title='Grab the code') Github
