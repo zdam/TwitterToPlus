@@ -215,7 +215,7 @@ function kickOffSlowGoogleProfileSearchInWebWorker(friendList) {
     var address = $('#hiddenUrl').val();
     var port = $('#hiddenPort').val();
     var url = "http://"+address+":"+port+"/search/";
-alert(url);
+//alert(url);
     var messageToWorker = {
         baseUrl: url,
         friendIdSlice: friendList,
