@@ -41,6 +41,7 @@ function checkTwitterApiLimit(){
         url:"http://api.twitter.com/1/account/rate_limit_status.json",
         dataType:"jsonp"
     }).success(function(rateInfo){
+        $("#checkingTwitterMessage").animate({ opacity: 0 });    
         if(rateInfo.remaining_hits<10){
             $('#sorryOverLimit').show();
         }else{

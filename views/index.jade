@@ -6,6 +6,8 @@ h2  Enter your Twitter screen name, we will try to find the Google+ profiles of 
 div#sorryOverLimit
     h2 Sorry, we have exceeded the Twitter api rate limit. Try again later, or 
         a(href='https://github.com/zdam/TwitterToPlus', title='Grab the code') grab the code and run it yourself
+div
+    span#checkingTwitterMessage Just a sec while we check that twitter is ready
 input#searchName 
 button#doWork(type="button") Search  
 span (Tested in recent Chrome, Firefox, Safari browsers)
@@ -23,7 +25,7 @@ br
 hr
 br
 br
-h3 Was this tool useful for you?
+h2 Was this tool useful for you?
 p If so, buy one of my super useful tools for the Mac: 
     p
         a(href='http://itunes.apple.com/us/app/windowmax/id441457289?mt=12&ls=1', title='WindowMax') WindowMax
@@ -46,7 +48,7 @@ h2 How this works
 p
         div 1. Asks twitter for your list of friends
         div 2. Fast search - Looks at your friends' bio and url to see if there is a Google+ profile or a gplus.to nickname
-        div 3. Slow Search - Pings http://gplus.to trying to find any accounts matching your friends twitter names. eg glus.to/zdam
+        div 3. Slow Search - Pings http://gplus.to trying to find any accounts matching your friends twitter names. eg gplus.to/zdam
 h2 Tech used
 p
         div
