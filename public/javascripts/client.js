@@ -1,5 +1,3 @@
-    var nastyGlobal = 0;    var friendCount = 0;
-
 $(function() {
 
     checkTwitterApiLimit();
@@ -49,6 +47,9 @@ function checkTwitterApiLimit(){
 
 function logProgress(info) {
     $("#progress").append("<li>" + info + "</li>");
+}
+function logResult(info) {
+    $("#userDetails").append("<li>" + info + "</li>");
 }
 
 function getTwitterFriendList(searchName) {
@@ -114,8 +115,6 @@ function searchTwitterDetailsForGoogleProfileInfo(friendIdSlice) {
         dataType: "jsonp"
     }).success(function(twitterFriendInfo) {
 
-            //$('#staticProgress').text($('#staticProgress').text()+'.');
-
             // we examine various parts to see if any Google+ info is stored
             $.each(twitterFriendInfo, function(i, item) {
 
@@ -150,7 +149,7 @@ function searchTwitterDetailsForGoogleProfileInfo(friendIdSlice) {
                 }
 
                 if (friendData.googleLink !== "") {
-                    nastyGlobal++
+                    foundFriendCount++
                     var display = '';
                     if(isKnownUrl){
                         display = '<a href="'+friendData.googleLink+'">'+friendData.screen_name+'</a>';
@@ -158,7 +157,7 @@ function searchTwitterDetailsForGoogleProfileInfo(friendIdSlice) {
                         display = friendData.screen_name + ", " + friendData.googleLink;
                     }
 
-                    $("#userDetails").append("<li>" + display + "</li>");
+                    logResult(display);
                 } else {
                     //logProgress('not found');
                 }
@@ -176,30 +175,28 @@ function kickOffSlowGoogleProfileSearchInWebWorker(friendList) {
         var workerData = JSON.parse(event.data);
 
         if (workerData.messageType === "logMessage") {
-            //logProgress("from worker: " + workerData.message);
             if(workerData.message.indexOf('omplete')> -1){
+                var perc = Math.floor((foundFriendCount / friendList.length)*100);
                 logProgress('** Search Complete **');
-                $("#userDetails").append("<li>** Search Complete **</li>");
-                $("#userDetails").append("<li>--</li>");
-                var perc = Math.floor((nastyGlobal / friendCount)*100);
-                $("#userDetails").append("<li>Sadly, only "+perc+"% of your twitter friends were found.</li>");
-                $("#userDetails").append("<li>YOU can improve your own results!</li>");
-                $("#userDetails").append("<li>Spread the word, ask folks on Twitter to go to</li>");
-                $("#userDetails").append("<li><a href='http://gplus.to/'>gplus.to</a> and get themselves a name that matches their twitter name</li>");
-                $("#userDetails").append("<li>- and ideally, they add their gplus.to name to their twitter url or bio</li>");
-                $("#userDetails").append("<li>- then come back in a while to get much better results.</li>");
+                logResult("** Search Complete **");
+                logResult("--");
+                logResult("Sadly, only "+perc+"% of your twitter friends were found.");
+                logResult("YOU can improve your own results!");
+                logResult("Spread the word, ask folks on Twitter to go to");
+                logResult("<a href='http://gplus.to/'>gplus.to</a> and get themselves a name that matches their twitter name");
+                logResult("- and ideally, they add their gplus.to name to their twitter url or bio");
+                logResult("- then come back in a while to get much better results.");
 
                 $('#loader').hide();
             }
-            //$('#staticProgress').text($('#staticProgress').text()+'.');
         } else {
             if (workerData.found) {
-                nastyGlobal++;
+                foundFriendCount++;
                 var friendData = $.data(document.body, "friendData" + workerData.id);
                 friendData.googleLink = "http://gplus.to/" + friendData.screen_name;
 
                 var info = "<a href='" + friendData.googleLink + "'>" +friendData.screen_name +"</a>";
-                $("#userDetails").append("<li>" + info + "</li>");
+                logResult(info);
             }
         }
     }
@@ -215,8 +212,12 @@ function kickOffSlowGoogleProfileSearchInWebWorker(friendList) {
         friendData[item + ''] = retrieved;
     });
 
+    // TODO - this doesn't work, instead, i need to maintain a a dev and prod env setting and be able to
+    // start node out on dotcloud using the prod env settings
+
     var address = $('#hiddenUrl').val();
     var port = $('#hiddenPort').val();
+
 
     var url = "http://"+address+":"+port+"/search/";
 alert(url);
@@ -249,4 +250,4 @@ function findGPlusPage(screenName) {
     });
 }
 
-
+var foundFriendCount = 0; // to remove this global

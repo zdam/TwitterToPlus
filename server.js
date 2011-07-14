@@ -31,6 +31,9 @@ app.configure('production', function(){
 
 app.get('/', function(req, res){
 
+    // TODO - this doesn't work, instead, i need to maitina a dev and prod env setting and be able to
+    // start node out on dotcloud using the prod env settings
+    
     var url = app.address().address;
     var port = app.address().port;
 
@@ -86,6 +89,7 @@ app.get('/search/:criteria', function(req, res){
 
 });
 
-app.listen(8080);
+var port = process.env.PORT || 3000;
+app.listen(port);
 
 console.log("Express server listening at address %s on port %d in %s mode", app.address().address, app.address().port, app.settings.env);
