@@ -7,7 +7,12 @@ $(function() {
 
         logProgress("Working..");
 
-          var friendListCall = getTwitterFriendList($('#searchName').val());
+        var searchName = $('#searchName').val();
+        if(searchName.indexOf('@')===0){
+            searchName = searchName.substring(1); // strip leading @
+        }
+
+        var friendListCall = getTwitterFriendList(searchName);
 
         friendListCall.success(function(friendList) {
 
