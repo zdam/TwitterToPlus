@@ -31,11 +31,13 @@ app.configure('production', function(){
 
 app.get('/', function(req, res){
 
-    // TODO - this doesn't work, instead, i need to maitina a dev and prod env setting and be able to
-    // start node out on dotcloud using the prod env settings
-    
     var url = app.address().address;
     var port = app.address().port;
+    if(app.settings.env !== "development"){
+        url = "http://www.twittertoplus.com";
+        port = "80";
+    }
+
 
   res.render('index', {
     title: 'Twitter To Google+',

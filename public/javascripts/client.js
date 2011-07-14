@@ -212,13 +212,8 @@ function kickOffSlowGoogleProfileSearchInWebWorker(friendList) {
         friendData[item + ''] = retrieved;
     });
 
-    // TODO - this doesn't work, instead, i need to maintain a a dev and prod env setting and be able to
-    // start node out on dotcloud using the prod env settings
-
     var address = $('#hiddenUrl').val();
     var port = $('#hiddenPort').val();
-
-
     var url = "http://"+address+":"+port+"/search/";
 alert(url);
     var messageToWorker = {
