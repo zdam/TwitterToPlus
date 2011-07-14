@@ -34,7 +34,7 @@ app.get('/', function(req, res){
     var url = app.address().address;
     var port = app.address().port;
     if(app.settings.env !== "development"){
-        url = "http://www.twittertoplus.com";
+        url = "www.twittertoplus.com";
         port = "80";
     }
 
