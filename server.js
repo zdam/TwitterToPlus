@@ -43,7 +43,7 @@ app.get('/', function(req, res){
     title: 'Twitter To Google+',
     url:url,
     port:port,
-    env:env
+    env:app.settings.env
   });
 
 });
