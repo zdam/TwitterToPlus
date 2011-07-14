@@ -59,12 +59,13 @@ app.get('/search/:criteria', function(req, res){
     var options = {
         host: 'www.gplus.to',
         port: 80,
-        path: '/'+screenName
+        path: '/'+screenName,
+        method: 'HEAD'
         
     };
 
     var http = require('http');
-    var innerReq = http.get(options, function(innerRes){
+    var innerReq = http.request(options, function(innerRes){
         //console.log('STATUS: ' + innerRes.statusCode);
 
         // if statusCode == 302, then we found a google plus profile
@@ -83,7 +84,7 @@ app.get('/search/:criteria', function(req, res){
     }).on('error', function(e) {
         console.log('problem with request: ' + e.message);
     });
-
+    innerReq.end();
 
 
 
