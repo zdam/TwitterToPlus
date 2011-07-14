@@ -42,7 +42,8 @@ app.get('/', function(req, res){
   res.render('index', {
     title: 'Twitter To Google+',
     url:url,
-    port:port
+    port:port,
+    env:env
   });
 
 });
