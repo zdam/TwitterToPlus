@@ -2,13 +2,13 @@ input(type='hidden', value=url, id='hiddenUrl')
 input(type='hidden', value=port, id='hiddenPort')
 input(type='hidden', value=env, id='env')
 h1  Twitter to Google+ finder
-h2  Enter your screen name, we will try to find the Google+ profiles of everyone you follow
+h2  Enter your Twitter screen name, we will try to find the Google+ profiles of everyone you follow
 div#sorryOverLimit
     h2 Sorry, we have exceeded the Twitter api rate limit. Try again later, or 
         a(href='https://github.com/zdam/TwitterToPlus', title='Grab the code') grab the code and run it yourself
 input#searchName 
 button#doWork(type="button") Search  
-span (Requires a recent, non-Microsoft browser.)
+span (Tested in recent Chrome, Firefox, Safari browsers)
 ul#progress
 label#staticProgress
 span#loader
