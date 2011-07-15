@@ -1,5 +1,7 @@
 $(function() {
 
+    ensureWebWorkerCapability();
+
     checkTwitterApiLimit();
 
     $('#doWork').click(function() {
@@ -16,7 +18,6 @@ $(function() {
 
         friendListCall.success(function(friendList) {
 
-            friendCount = friendList.length;
             var deferredTwitterCalls = buildSetOfDeferredTwitterDetailCalls(friendList);
 
             $.when.apply($, deferredTwitterCalls).then(function() {
@@ -25,17 +26,24 @@ $(function() {
         });
 
         friendListCall.error(function(jqXHR, textStatus, error){
-            alert('Please ensure you use a valid twitter username');
+            //alert('Please ensure you use a valid twitter username');
             logProgress("Actually, not working.. double check your twitter name");
         })
     });
 });
 
+function ensureWebWorkerCapability(){
+    if(!!window.Worker){
+        // we have the capability
+    }else{
+        // we dont
+        $('#sorryNoWebWorkers').show();
+    }
+}
+
 function checkTwitterApiLimit(){
     $('#doWork').attr('disabled', true);
     $('#searchName').attr('disabled', true);
-    $('#sorryOverLimit').hide();
-    $('#loader').hide();
 
     $.ajax({
         url:"http://api.twitter.com/1/account/rate_limit_status.json",
@@ -54,6 +62,7 @@ function checkTwitterApiLimit(){
 function logProgress(info) {
     $("#progress").append("<li>" + info + "</li>");
 }
+
 function logResult(info) {
     $("#userDetails").append("<li>" + info + "</li>");
 }
@@ -178,6 +187,8 @@ function kickOffSlowGoogleProfileSearchInWebWorker(friendList) {
     var worker = new Worker("javascripts/worker.js");
 
     worker.onmessage = function(event) {
+        //logProgress('msg from worker');
+        //logProgress(event.data);
         var workerData = JSON.parse(event.data);
 
         if (workerData.messageType === "logMessage") {
@@ -215,7 +226,14 @@ function kickOffSlowGoogleProfileSearchInWebWorker(friendList) {
     var friendData = {};
     $.each(friendList, function(i, item) {
         var retrieved = $.data(document.body, "friendData" + item);
-        friendData[item + ''] = retrieved;
+        //logResult(JSON.stringify(retrieved));
+        if(retrieved == null || retrieved == undefined){
+            logResult('problem with this twiterId:' + item);
+        }else{
+            friendData[item + ''] = retrieved;
+        }
+
+
     });
 
     var address = $('#hiddenUrl').val();
