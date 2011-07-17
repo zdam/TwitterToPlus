@@ -4,7 +4,16 @@ $(function() {
 
     checkTwitterApiLimit();
 
-    $('#doWork').click(function() {
+    handleSearchClick();
+
+    handleExportUsersClick();
+
+   
+});
+
+function handleSearchClick(){
+
+ $('#search').click(function() {
         $('ul li').remove();
 
         logProgress("Working..");
@@ -29,8 +38,18 @@ $(function() {
             //alert('Please ensure you use a valid twitter username');
             logProgress("Actually, not working.. double check your twitter name");
         })
+    });    
+}
+
+function handleExportUsersClick() {
+    $('#exportUsers').click(function(){
+        var userList = [];
+        $('#userDetails li').each(function(i, item){
+            userList.push($(item).find('a').attr('href'));
+        });
+        $('#exportedUserList').text(userList.join("\n"));        
     });
-});
+}
 
 function ensureWebWorkerCapability(){
     if(!!window.Worker){
@@ -167,7 +186,7 @@ function searchTwitterDetailsForGoogleProfileInfo(friendIdSlice) {
                     foundFriendCount++
                     var display = '';
                     if(isKnownUrl){
-                        display = '<a href="'+friendData.googleLink+'">'+friendData.screen_name+'</a>';
+                        display = '<a target="_blank" href="'+friendData.googleLink+'">'+friendData.screen_name+'</a>';
                     }else{
                         display = friendData.screen_name + ", " + friendData.googleLink;
                     }
@@ -212,7 +231,7 @@ function kickOffSlowGoogleProfileSearchInWebWorker(friendList) {
                 var friendData = $.data(document.body, "friendData" + workerData.id);
                 friendData.googleLink = "http://gplus.to/" + friendData.screen_name;
 
-                var info = "<a href='" + friendData.googleLink + "'>" +friendData.screen_name +"</a>";
+                var info = "<a target='_blank' href='" + friendData.googleLink + "'>" +friendData.screen_name +"</a>";
                 logResult(info);
             }
         }

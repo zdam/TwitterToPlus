@@ -11,16 +11,18 @@ div#sorryNoWebWorkers
 div
     span#checkingTwitterMessage Just a sec while we check that twitter is ready
 input#searchName 
-button#doWork(type="button") Search  
-span (Tested in recent Chrome, Firefox, Safari browsers)
+button#search(type="button") Search  
 ul#progress
-label#staticProgress
 span#loader
     img(id='loaderImg', src='images/ajax-loader.gif', alt='Progress Indicator')
-    span Seriously, this will take a while..
+    span Seriously, this will take a while..  Soon, you will be able to export found users.
 ul#userIds
 ul#userDetails
-ul#foundgoogleplus
+div#exportFunctionality
+    div
+        button#exportUsers(type="button") Export Users
+    div    
+        textarea#exportedUserList
 br
 br
 br
